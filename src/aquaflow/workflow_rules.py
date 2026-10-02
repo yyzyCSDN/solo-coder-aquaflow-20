@@ -56,7 +56,7 @@ def evaluate(name: str, p: dict[str, Any]) -> dict[str, Any]:
         age = project_age(State(float(s["volume"]), float(s["inflow"]), float(s["outflow"]), float(s["age_hours"])), float(p["hours"]))
         return {"decision": "renew" if age <= float(p.get("max_age", 24)) else "hold", "value": age, "evidence": {"fresh_inflow": float(s["inflow"])}}
     if name == "network_isolation":
-        ps = [Pipe(str(x["id"]), str(x["a"]), str(x["b"]), bool(x.get("open", True)) if p.get("_connectivity") == "bidirectional" else False) for x in p["pipes"]]
+        ps = [Pipe(str(x["id"]), str(x["a"]), str(x["b"]), bool(x.get("open", True))) for x in p["pipes"]]
         cut = isolated(set(p["nodes"]), ps, set(p["closed"]), set(p["sources"]))
         return {"decision": "isolate", "value": sorted(cut), "evidence": {"source_count": len(p["sources"])}}
     if name == "zone_pressure":
